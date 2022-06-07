@@ -1,27 +1,39 @@
+import { useEffect, useState } from "react"
 import ListItem from "../components/layout/ListItem/ListItem"
 
-const data = [
-    {
-        id: 'm1',
-        title: 'This the first meet up',
-        image: 'images/Bar2.jpg',
-        address: 'Beatiful Angel T. Kitchen, 23 Kudaki Road, Opp Foursquare Church, Hotel Bust stop',
-        description: 'This is the first meeting, its going to be amazing you dont want to miss. It will be fun'
-    },
-    {
-        id: 'm2',
-        title: 'This the second meet up',
-        image: 'images/restaurant1.webp',
-        address: 'Ikeja City Mall, 9 Adekunle Fajuyi Obafemi Awolowo Way, Ikeja',
-        description: 'Second meeting, first was amazing, imagine how breath taking second would be'
-    }
-]
+
 function AllMeetUps() {
+    const [isLoading, setisLoading] = useState(true);
+    const [meetupData, setmeetupData] = useState([]);
+    useEffect(() => {
+        fetch('https://fir-react-app-aec58-default-rtdb.firebaseio.com/meetups.json'
+        ).then((response) => {
+            return response.json()
+        }).then((data) => {
+            const dataArray = []
+            for (const key in data) {
+                const dataObject = {
+                    id: key,
+                    ...data[key]
+                }
+                dataArray.push(dataObject)
+            }
+            setisLoading(false)
+            setmeetupData(dataArray)
+        })
+    }, [])
+    
+    if (isLoading) {
+        return <section>
+            <p>Page is Loading....</p>
+        </section>
+    }
+
     return (
         <section>
             <h1>All Meet Ups</h1>
             <ul>
-                <ListItem meetups={data} />
+                <ListItem meetups={meetupData} />
             </ul>
             
         </section>
