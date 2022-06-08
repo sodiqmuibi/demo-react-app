@@ -1,6 +1,24 @@
+import { useContext } from 'react'
+import FavoriteContext from '../../../store-state/FavoriteContext'
 import Wrapper from '../../wrapper/Wrapper'
 import classes from './Item.module.css'
 function Item(props) {
+    const FavContext = useContext(FavoriteContext)
+    const isItemfavorite = FavContext.isitemfavorite(props.id)
+    function favoriteButtonToggler() {
+        if (isItemfavorite) {
+            FavContext.removefavorite(props.id)
+        }
+        else {
+            FavContext.addfavorite({
+                id: props.id,
+                title: props.title,
+                image: props.image,
+                address: props.address,
+                description: props.description
+            })
+        }
+    }
     return (
         <li className={classes.item}>
             <Wrapper>
@@ -13,7 +31,7 @@ function Item(props) {
                     <p>{props.description}</p>
                 </div>
                 <div className={classes.btn}>
-                    <button>Add to favorites</button>
+                    <button onClick={favoriteButtonToggler}>{isItemfavorite ? 'Remove Favorite' : 'Add Favorite' }</button>
                 </div>
             </Wrapper>
             

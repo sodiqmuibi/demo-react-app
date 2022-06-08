@@ -4,9 +4,11 @@ import AllMeetUps from './route-pages/AllMeetUps'
 import NewMeetUps from './route-pages/NewMeetUps';
 import Favorites from './route-pages/Favorites'
 import Layout from './components/layout/Layout';
+import { FavoriteContextProvider } from './store-state/FavoriteContext';
 
 function App() {
   return (
+    <FavoriteContextProvider>
       <Layout>
         <Routes>
           <Route path='/' exact element={<AllMeetUps />}></Route>
@@ -14,6 +16,8 @@ function App() {
           <Route path= '/favorite' exact element={<Favorites />}></Route>
         </Routes>
       </Layout> 
+    </FavoriteContextProvider>
+      
   )
 }
 
